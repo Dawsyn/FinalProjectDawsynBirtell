@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div class="container">
+    <h1 class="mt-4">NBA Scores</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+<table>
+  <tr><th>Matchup</th><th>Score</th><th>Status</th><th>Date</th></tr>
+  {% for game in scores %}
+  <tr>
+    <td>{{ game['away_team'] }} @ {{ game['home_team'] }}</td>
+    <td>{{ game['away_score'] }} - {{ game['home_score'] }}</td>
+    <td>{{ game['game_status'] }}</td>
+    <td>{{ game['game_date'] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

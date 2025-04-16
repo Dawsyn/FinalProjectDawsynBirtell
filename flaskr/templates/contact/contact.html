@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div class="container">
+    <h1 class="mt-4">Contact Us</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="contactForm" method="post">
+      <div class="mb-3">
+        <label for="name" class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your message" required></textarea>
+      </div>
+      <!-- This button triggers the modal, not a direct form submission -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+        Send Message
+      </button>
+    </form>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirm Send</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Thanks for getting in touch with us!
+        </div>
+        <div class="modal-footer">
+          <!-- Submit the form when confirmed -->
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('contactForm').submit()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
