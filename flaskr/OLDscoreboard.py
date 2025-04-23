@@ -2,10 +2,11 @@ from flask import Blueprint, render_template, request
 from datetime import datetime
 import sqlite3
 
-api_bp = Blueprint('api', __name__)
+bp = Blueprint('scoreboard', __name__, url_prefix='/scoreboard')
 
-@api_bp.route('/scoreboard')
-def show_scores():
+@bp.route('/')
+def index():
+    print("🎯 scoreboard route hit")
     conn = sqlite3.connect("instance/flaskr.sqlite")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -35,6 +36,6 @@ def show_scores():
 
     conn.close()
     print("All dates from DB:", all_dates)
-    return "<h1>Hello from the route!</h1>"
 
-    #return render_template("scores.html", scores=scores, all_dates=all_dates, selected_date=selected_date)
+
+    return render_template("scoreboard/scoreboard.html", scores=scores, all_dates=all_dates, selected_date=selected_date)

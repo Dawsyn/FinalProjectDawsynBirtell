@@ -2,9 +2,12 @@ import requests
 import sqlite3 
 from datetime import datetime
 
+
+date_str = datetime.now().strftime("%Y%m%d")
+
 url = "https://nba-api-free-data.p.rapidapi.com/nba-scoreboard-by-date"
 
-querystring = {"date":"20250120"}
+querystring = {"date":date_str}
 
 headers = {
 "x-rapidapi-key": "e1cac09505msh874e3ef17649cc2p14a0d9jsn181a6a590be6",

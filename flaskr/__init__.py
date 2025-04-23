@@ -55,10 +55,14 @@ def create_app(test_config=None):
     from . import contact
     app.register_blueprint(contact.bp)
 
-    from . import scoreboard
-    app.register_blueprint(scoreboard.bp)
+    from . import OLDscoreboard
+    app.register_blueprint(OLDscoreboard.bp)
 
     from .api.routes import api_bp
     app.register_blueprint(api_bp)
+
+    from . import user
+    app.register_blueprint(user.bp)
+
 
     return app
