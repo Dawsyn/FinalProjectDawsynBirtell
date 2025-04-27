@@ -1,17 +1,23 @@
 <!doctype html>
-
+<div class="container">
 <title>{% block title %}{% endblock %} - Flaskr</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
-  <h1>getBuckets</h1>
-  <p>Welcome, {{ g.user['username'] }} — Favorite Team: {{ g.user['fav_team'] }}</p>
-
-  <a type="button" class="btn btn-light" href="{{ url_for('blog.index') }}">
+  <h1>
+    <a href="{{url_for('user.landing')}}">getBuckets
+    </a>
+  </h1>
+  {% if not g.user %}
+    <p class="welcome">Welcome to getBuckets</p>
+  {% else %}
+  <p class="welcome">Welcome, {{ g.user['username'] }} — Favorite Team: {{ g.user['fav_team'] }}</p>
+  {% endif %}
+<!--   <a type="button" class="btn btn-light" href="{{ url_for('blog.index') }}">
     Blog
   </a>
   <a type="button" class="btn btn-light" href="{{ url_for('contact.index') }}">
     Contact
-  </a>
+  </a> -->
   <a type="button" class="btn btn-light" href="{{ url_for('scoreboard.index') }}">
     NBA Scores
   </a>
@@ -42,3 +48,4 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+</div>

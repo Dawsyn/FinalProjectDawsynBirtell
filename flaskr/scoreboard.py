@@ -1,79 +1,41 @@
-import os
-import sqlite3
+from flask import Blueprint, render_template, request
 from datetime import datetime
-from dotenv import load_dotenv
-from balldontlie import BalldontlieAPI
+import sqlite3
+
+bp = Blueprint('scoreboard', __name__, url_prefix='/scoreboard')
+
+@bp.route('/')
+def index():
+    print("🎯 scoreboard route hit")
+    conn = sqlite3.connect("instance/flaskr.sqlite")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    # Get all distinct game dates from DB
+    cur.execute("SELECT DISTINCT game_date FROM scoreboard ORDER BY game_date DESC")
+    all_dates = [row["game_date"] for row in cur.fetchall()]
+
+    # Format today’s date to match game_date format
+    today = datetime.today().strftime("%m/%d/%Y")
+
+    # Determine selected date: GET param -> today if in list -> most recent date
+    selected_date = request.args.get("date")
+    if not selected_date:
+        if today in all_dates:
+            selected_date = today
+        elif all_dates:
+            selected_date = all_dates[0]
+        else:
+            selected_date = None
+
+    # Fetch scores for the selected date if there is one
+    scores = []
+    if selected_date:
+        cur.execute("SELECT * FROM scoreboard WHERE game_date = ?", (selected_date,))
+        scores = cur.fetchall()
+
+    conn.close()
+    print("All dates from DB:", all_dates)
 
 
-
-# Load .env and initialize API
-load_dotenv()
-api = BalldontlieAPI(api_key=os.getenv("API_KEY"))
-
-# Connect to SQLite DB
-conn = sqlite3.connect("instance/flaskr.sqlite")
-cur = conn.cursor()
-
-# Ensure the scoreboard table exists
-cur.execute("""
-CREATE TABLE IF NOT EXISTS scoreboard (
-    game_id INTEGER PRIMARY KEY,
-    game_date TEXT,
-    home_team TEXT,
-    home_score INTEGER,
-    away_team TEXT,
-    away_score INTEGER,
-    period_number INTEGER,
-    game_status TEXT
-)
-""")
-
-# Fetch and store games
-cursor = None
-total = 0
-
-while True:
-    print(f"🔄 Fetching games with cursor: {cursor or 'start'}")
-
-    params = {
-        "seasons": [2024],
-        "per_page": 100
-    }
-    if cursor:
-        params["cursor"] = cursor
-
-    games_data = api.nba.games.list(**params)
-    data = games_data.data
-    meta = games_data.meta
-
-    for game in data:
-        try:
-            formatted_date = datetime.strptime(game.date[:10], "%Y-%m-%d").strftime("%m/%d/%Y")
-            
-            cur.execute("""
-                INSERT OR IGNORE INTO scoreboard (
-                    game_id, game_date, home_team, home_score,
-                    away_team, away_score, period_number, game_status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                game.id,
-                formatted_date,
-                game.home_team.full_name,
-                game.home_team_score,
-                game.visitor_team.full_name,
-                game.visitor_team_score,
-                game.period,
-                game.status
-            ))
-            total += 1
-        except Exception as e:
-            print(f"❌ Failed to insert game {game.id}: {e}")
-
-    cursor = meta.next_cursor
-    if not cursor:
-        break
-
-# Finalize
-conn.commit()
-conn.close()
-print(f"✅ Done! Total games inserted: {total}")
+    return render_template("scoreboard/scoreboard.html", scores=scores, all_dates=all_dates, selected_date=selected_date)

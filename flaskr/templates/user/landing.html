@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 
-{% block header %}
-  <h1>Welcome back, {{ g.user['username'] }}!</h1>
-{% endblock %}
-
 {% block content %}
   <h2>Your Favorite Team: {{ fav_team }}</h2>
-  <p>We'll show you the latest games and news for the {{ fav_team }} soon!</p>
+
+  {% if players %}
+    <h3>Roster:</h3>
+    <ul>
+      {% for player in players %}
+        <li>{{ player.first_name }} {{ player.last_name }} — {{ player.position or "Position Unknown" }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No roster data available.</p>
+  {% endif %}
 {% endblock %}

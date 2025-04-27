@@ -55,8 +55,8 @@ def create_app(test_config=None):
     from . import contact
     app.register_blueprint(contact.bp)
 
-    from . import OLDscoreboard
-    app.register_blueprint(OLDscoreboard.bp)
+    from . import scoreboard
+    app.register_blueprint(scoreboard.bp)
 
     from .api.routes import api_bp
     app.register_blueprint(api_bp)
