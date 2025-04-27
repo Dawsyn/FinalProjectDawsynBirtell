@@ -1,6 +1,6 @@
 '''
 INF601 - Programming in Python
-Assignment - Mini Project 3
+Assignment - Final Project
 I, Dawsyn Birtell, affirm that the work submitted for this assignment is entirely my own. 
 I have not engaged in any form of academic dishonesty, including but not limited to cheating, plagiarism, or the use of unauthorized materials.
 I have neither provided nor received unauthorized assistance and have accurately cited all sources in adherence to academic standards.
@@ -47,13 +47,6 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
-
-    from . import blog
-    app.register_blueprint(blog.bp)
-    app.add_url_rule('/', endpoint='index')
-
-    from . import contact
-    app.register_blueprint(contact.bp)
 
     from . import scoreboard
     app.register_blueprint(scoreboard.bp)

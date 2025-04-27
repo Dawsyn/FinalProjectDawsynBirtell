@@ -6,7 +6,6 @@ bp = Blueprint('scoreboard', __name__, url_prefix='/scoreboard')
 
 @bp.route('/')
 def index():
-    print("🎯 scoreboard route hit")
     conn = sqlite3.connect("instance/flaskr.sqlite")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -35,7 +34,6 @@ def index():
         scores = cur.fetchall()
 
     conn.close()
-    print("All dates from DB:", all_dates)
 
 
     return render_template("scoreboard/scoreboard.html", scores=scores, all_dates=all_dates, selected_date=selected_date)
