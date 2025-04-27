@@ -34,7 +34,6 @@ def show_scores():
         scores = cur.fetchall()
 
     conn.close()
-    print("All dates from DB:", all_dates)
     return "<h1>Hello from the route!</h1>"
 
     #return render_template("scores.html", scores=scores, all_dates=all_dates, selected_date=selected_date)
