@@ -1,5 +1,6 @@
 import requests
 import sqlite3 
+import os
 from datetime import datetime
 
 
@@ -14,12 +15,14 @@ headers = {
 "x-rapidapi-host": "nba-api-free-data.p.rapidapi.com"
 }
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, '..', '..', '..', 'instance', 'flaskr.sqlite')
 
 def save_scores_to_db(data):
     
 
 	
-    conn = sqlite3.connect("instance/flaskr.sqlite")
+    conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     
 

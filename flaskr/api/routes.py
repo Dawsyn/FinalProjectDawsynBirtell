@@ -1,8 +1,14 @@
 from flask import Blueprint, render_template, request
+from flask import redirect, url_for
 from datetime import datetime
 import sqlite3
 
 api_bp = Blueprint('api', __name__)
+
+@api_bp.route('/')
+def index():
+    return redirect(url_for('auth.login'))
+
 
 @api_bp.route('/scoreboard')
 def show_scores():

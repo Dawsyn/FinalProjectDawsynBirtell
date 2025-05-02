@@ -4,13 +4,19 @@
   <h2>Your Favorite Team: {{ fav_team }}</h2>
 
   {% if players %}
-    <h3>Roster:</h3>
-    <ul>
-      {% for player in players %}
-        <li>{{ player.first_name }} {{ player.last_name }} — {{ player.position or "Position Unknown" }}</li>
+  <table class="table">
+    <tr><th>Player</th><th>Position</th><th>Height</th><th>Weight</th><th>Jersey Number</th></tr>
+      {% for player in players[:15] %}
+      <tr>
+        <td>{{ player.first_name }} {{ player.last_name }}</td>
+        <td>{{ player.position or "Position Unknown" }}</td>
+        <td>{{ player.height or "Height Unknown" }}</td>
+        <td>{{ player.weight or "Weight Unknown" }}</td>
+        <td>{{ player.jersey_number or "Jersey Number Unknown" }}</td>
+      </tr>
       {% endfor %}
-    </ul>
   {% else %}
     <p>No roster data available.</p>
   {% endif %}
+</table>
 {% endblock %}
